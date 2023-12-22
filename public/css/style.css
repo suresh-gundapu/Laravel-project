@@ -1,0 +1,17 @@
+*{
+  margin:0px;
+  padding:0px;
+  box-sizing: border-box;
+}
+.body-content{
+  min-height: calc(100vh - 117px);
+}
+.footer-app{
+  background-color: black;
+  color:aliceblue;
+  text-align: center;
+  padding: 1rem;
+}
+.error{
+  color:red;
+}

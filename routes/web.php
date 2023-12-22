@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\LoginRegisterController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +14,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+
+Route::controller(LoginRegisterController::class)->group(function () {
+
+    Route::get('/', 'login')->name('login');
+    Route::post('/login-action', 'loginAction')->name('login-action');
+    Route::get('/register', 'register')->name('register');
+    Route::post('/register-action', 'registerAction')->name('register-action');
+
+    Route::get('/dashboard', 'dashboard')->name('dashboard');
+    Route::get('/logout', 'logout')->name('logout');
 });

@@ -1,0 +1,1140 @@
+===>Copy Rights @ SURESH GUNDAPU===>
+
+How to switch PHP Versions :
+----------------------------
+----------------------------
+sudo a2dismod php7.4
+sudo a2enmod php8.2
+
+sudo update-alternatives --set php /usr/bin/php8.2
+sudo update-alternatives --set phar /usr/bin/phar8.2
+sudo update-alternatives --set phar.phar /usr/bin/phar.phar8.2
+
+sudo service apache2 restart
+
+sudo a2dismod php8.2
+sudo a2enmod php7.4
+
+sudo update-alternatives --set php /usr/bin/php7.4
+sudo update-alternatives --set phar /usr/bin/phar7.4
+sudo update-alternatives --set phar.phar /usr/bin/phar.phar7.4
+
+sudo service apache2 restart
+
+Installation Laravel 9 in Ubuntu 20.0
+----------------
+----------------
+
+1) Need to check Ubuntu having latest packages and it’s modules, run following commands –
+
+$ sudo apt update
+
+$ sudo apt upgrade
+
+2) We need to Add PPA for PHP, run these following commands.
+
+$ sudo apt install software-properties-common
+
+$ sudo add-apt-repository ppa:ondrej/php
+
+$ sudo apt update
+
+3) Install PHP >= 8.1 for Apache
+For Apache installation, run this command to your terminal.
+
+$ sudo apt install php8.1
+
+4) Switching versions to php8.1
+
+5)Verify by Command Line
+Open terminal and type command, this command is for Apache.
+
+$ php -v
+
+6)Installation of PHP Extensions & Restart
+
+$ sudo apt install php8.1-common php8.1-mysql php8.1-xml php8.1-xmlrpc php8.1-curl php8.1-gd php8.1-imagick php8.1-cli php8.1-dev php8.1-imap php8.1-mbstring php8.1-opcache php8.1-soap php8.1-zip php8.1-intl -y
+
+$ sudo apt-get install libapache2-mod-php8.1
+
+7)We need to set firstly system dependencies and it’s packages at their latest version. Again same what we did above, needs to run this command.
+
+$ sudo apt update
+
+8)Next we are going to run command using cURL, you need to make sure you should curl extension enabled. Otherwise run this command to install.
+
+$ sudo apt install curl php-cli php-mbstring git unzip
+Back to home directory
+
+$ cd ~
+
+9)Download composer installer (2 version)
+
+To test composer, back to terminal and type command
+
+$ composer
+
+10)Laravel 9 Installation
+
+Laravel Installation can be done in two ways.
+
+1)Laravel Installer:
+$ composer global require laravel/installer
+To create ad install laravel project in system,
+
+$ laravel new myblog
+
+2)By using composer:
+
+$ composer create-project laravel/laravel Larvel_Dev
+
+
+11)To start the development server of Laravel –
+
+$ php artisan serve
+
+This command outputs –
+
+Starting Laravel development server: http://127.0.0.1:8000
+
+add your machine port to URL run bellow command
+php artisan serve --host=192.168.20.50 --port=8000
+
+
+Solve phpmyadmin issue in php8.1:
+-----------------------------------
+-----------------------------------
+
+The solution is very easy. go into your phpMyAdmin directory and open the config.inc.php file with nano config.inc.php then change the blowfish secret with the new key, generate it here https://phpsolved.com/phpmyadmin-blowfish-secret-generator/ copy and paste.
+
+Then scroll down until you see $cfg['UploadDir'] = ''; and $cfg['SaveDir'] = ''; below these two add the code $cfg['TempDir'] = '/tmp/'; and save the config.
+
+
+Create Layouts :
+----------------
+----------------
+
+->Layout are used to same as include a header and footer to body section
+
+->Master layout
+
+header
+
+body==>dynamic
+
+footer
+
+
+->step 1 :
+
+-> create "layouts" folder in views section and create one layout file as ex: app.blade.php
+
+in this add header and footer section code
+
+
+<header>
+    <title>@yeild('title')</title>
+</header>
+
+<body>
+    @section('body')
+    @show
+</body>
+<footer></footer>
+
+-> create view file in view section as ex: test.blade.php
+
+in this add body content and include layouts app file of header and footer
+
+
+@extends('layouts.app')
+
+@section('title)
+title name
+@endsection
+
+@section('body)
+
+@endsection
+
+
+Create components ::
+
+--------------------
+--------------------
+
+--> components are like section or layout which can be reused through out the application
+
+--> ex: display message layout or display header layout
+
+--> there are 2 methods to create component
+
+1) class based component
+
+2) anonymous based component
+
+command : php artisan make:component ClassName
+
+--> when we create component it creates 2 folder and component files inside /app and /resources
+
+--> component is mainly using for reusable
+
+->> first we create message component by using command (class based)
+
+--> after that we can use these message component class any web page in our application by using bellow code
+
+<x -message />
+
+note:here message is component class name
+
+
+
+Passing Attributes / values to components:
+------------------------------------------
+------------------------------------------
+
+--> we can pass some attributes and values to components by declaring as public accessfiers in component class
+
+3 attributes we can pass now
+
+1)type==>this is content type means for example which is error or success type
+2)message ==> this is the message of type example success or failure message
+
+3)page ==> this content coming from route or controller
+
+--> first we need to declare this attributes in view page
+
+<x -message type="error" message="this is error message" />
+
+--> second we need to declare this attributes as public access specifiers in component message class
+
+$type;
+$message;
+
+public function __construct($type="",$message="")
+{
+$this->type = $type;
+$this->type = $message
+}
+
+-> third step we need to declare this variables into blade template of message component
+
+<div>
+
+    <h1>This is component template example</h1>
+    <h2>{{ $type }}</h2>
+    <h2>{{ $message }}</h2>
+</div>
+
+Slots and Inner slots of component:
+-------------------------------------
+-------------------------------------
+-->Slots are part of the component where we put extra content and work on it.
+->Additionally , we can pass inner attributes by using slots
+
+command : php artisan make:component ClassName
+
+here
+<x -message />==>is the component render tag
+
+<x -message> => opening tag
+
+    </x-message> => closing tag
+
+
+    <x -message>This is additional content </x -message>
+
+    Inline components :
+    ------------------
+    -------------------
+
+    Inline components are used to shortcut for the above methods
+
+    When create component there is create 2 files one is class and layout
+
+    but when we create inline component we can create only class component and manage layots in this
+
+    Command : php artisan make:component CompName --inline
+
+    \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+    Create and Submit Form to server:
+    =================================
+
+
+    -->Create controller and view page
+
+    Open project into terminal and type these artisan command into it to create controllers.
+
+    $ php artisan make:controller HomeController
+
+    --> Create Rout in web.php
+
+    --> in controller collect form values from (Requst $request) parameter
+
+    $request->all() will producte all post values from from
+
+
+    Form Validation Methods:
+    =========================
+
+
+    From valiations can done by 3 methods
+
+    1)By using validate() method
+    2)By making request validation class (validated)
+    3)By creating manual validators (validate facdes)
+
+    1)Ex:
+    public function StudentAction(Request $request){
+    $request->validate([
+    "name"=>"required",
+    "email"=>"required",
+    "mobile"=>"required",
+    "comapny"=>"required",
+    "add"=>"required"
+    ],[
+    "name.required" => "name must"
+    ]);
+    print_r($request->all());
+    }
+
+    display errors in blade
+
+    @error('name')
+    {{ $message }}
+    @enderror
+
+    2) In this create request class
+
+    php artisan make:request RequestClassname
+
+    we can find Request folder in http folder
+
+    in that class controller we can add reules and message for validations after that we can integrate this class to controller
+
+    Keep old value in form fields when validations occur:
+    ====================================================
+
+    when validation work happening the form values cleared but again we enter all values so over come this we can keep old values in form feilds
+
+    just put value attribute in all form input fields
+
+
+    value = "{{ old('name_of_field') }}"
+
+    Basics of Database :
+    ====================
+
+    All database configuration settings need to be set in .env file dont touch database.php
+
+
+    Database Basic Raw Queries (DB facades):
+    ========================================
+
+    ->First we need to import DB facades to use raw queries
+
+    use illuminate\Support\Facades\DB
+
+    DB::insert("insert into table_name (col1 , col2) values(??)",["a","b"]);
+
+    DB::select("SELECT * FROM table_name WHERE id=:id",["id"=>2]);
+
+    DB::update("update tbl_users SET email=:email_address WHERE id = :id",["email_address"=>"example@gmail.com" , "id" => 2]);
+
+    DB::delete("DELETE FROM tbl_users WHERE id=:id",["id"=>1]);
+
+
+    Migration concept :
+    ===================
+
+    ->Migrations are version control for application database
+
+    ->laravel migration is a way that allows create table in database , without actually going to the database manager like phpmyadmin or sqlite
+
+    ->command : php artisan make:migration table_name
+
+
+    ->After run above command migration folder create in database folder
+
+
+    -> migration class contain 2 methods up() and down()
+
+    up(): it is used to add new table , column or index to database
+    public function up()
+    {
+    Schema::create('student_reg', function (Blueprint $table) {
+    $table->id();
+    $table->string('name' ,20);
+    $table->string('email',20)->unique();
+    $table->string('mobile',11);
+    $table->string('company',30);
+    $table->longtext('address',50);
+    $table->timestamps();
+    });
+    }
+
+    down(): it should reverse operations performed by the up method
+    public function down()
+    {
+    Schema::dropIfExists('student_reg');
+    }
+
+    How to run migration to database :
+    ----------------------------------
+
+    php artisan migrate
+
+    when run these command automatically tables of migrations created and updated
+    if you want delete all created tables hit bellow command
+
+    php artisan migrate:rollback
+
+
+    u can again create all tables with update
+
+    php artisan migrate:refresh
+
+
+
+    Basics of seeders :
+    =================
+
+    -> By using seeders we can insert dummy or fake data into database table
+
+    -> command : php artisan make:seeder StudentSeeder
+
+    after run above command it create seeders folder in database folder, it has two files one is databse seeder and Student class seeder
+
+    -> we can insert by using student seeder into student reg table using db facades
+
+    public function run()
+    {
+    DB::table("student_reg")->insert([
+    "name"=>"suresh",
+    "email"=>"suresh@gmail.com",
+    "mobile"=>9603212151,
+    "company"=>"hb",
+    "address"=>"hyd"
+    ]);
+    }
+
+
+    -> after that using databse seeder file we can integrate student seeder class file into this
+    public function run()
+    {
+    // \App\Models\User::factory(10)->create();
+
+    // \App\Models\User::factory()->create([
+    // 'name' => 'Test User',
+    // 'email' => 'test@example.com',
+    // ]);
+
+    //by using seeders
+
+    $this->call([
+    Studentseeder::class
+    ]);
+    }
+
+
+    -> when run this command the student seeder will insert dummy data
+
+    command : php artisan db:seed --class=Studentseeder
+
+
+    Faker library - insert dummy data :
+    ==================================
+
+    -> By Using this we can insert dummy data without manual entry data
+
+    -> Laravel has already it so we need ti intilize only
+
+    -> in Studentseeder file we can intilize faker library
+
+    $faker = \Faker\Factory::create();
+    // DB::table("student_reg")->insert([
+    // "name"=>"suresh",
+    // "email"=>"suresh@gmail.com",
+    // "mobile"=>9603212151,
+    // "company"=>"hb",
+    // "address"=>"hyd"
+    // ]);
+    DB::table("student_reg")->insert([
+    "name"=>$faker->name,
+    "email"=>$faker->safeEmail,
+    "mobile"=>$faker->phoneNumber,
+    "company"=>$faker->name,
+    "address"=>$faker->address
+    ]);
+
+    note: in fajer library documentation we can find fileds name
+    -> by using same above command we can create dummy data
+    command : php artisan db:seed --class=Studentseeder
+
+    Using Factory to seeding dummy data:
+    ====================================
+
+    -> By using faker library we can insert one row of dummy data at a time when run seed command
+
+    -> to overcome this drawback Factory method is using to insert number of row of dummy data will inserted into table
+
+    -> first we create model and factory file , then this model integrated with factory file
+
+    -> Note : create model and table we should fallow naming convention
+
+    ex:
+    table= Students ; model =Student
+
+    table name should plural and model name should be singular
+
+    -> model create
+
+    command : php artisian make:model Student
+
+    dont touch model file
+
+    -> create factory file
+
+    command : php artisan make:factory StudentFactory
+
+    -> open student factory file and return the table columns
+
+    and integrate student model
+
+    use App\Models\Student;
+
+    public function definition()
+    {
+    return [
+    "name"=>$this->faker->name,
+    "email"=>$this->faker->safeEmail,
+    "mobile"=>$this->faker->phoneNumber,
+    "company"=>$this->faker->name,
+    "address"=>$this->faker->address
+    ];
+    }
+
+    -> open database seeder file integrate student model and we can give no of rows data to insert into table
+
+    \App\Models\Student::factory(10)->create();
+
+    by using same above command we can create dummy data
+    command : php artisan db:seed
+    //////////////////////////////////////////////
+    Sessions in Laravel :
+    =====================
+
+    In Laravel 9, sessions are handled by the framework's built-in session manager, which utilizes drivers to store session data. Laravel supports several session storage options, including file-based storage, database-based storage, and cache-based storage. By default, Laravel uses file-based storage, which stores session data as files on the server. The configuration for sessions is stored in the config/session.php file, and you can use this file to customize various aspects of the session manager, such as the lifetime of a session or the path where session files should be stored.
+
+    Retrieving Data:
+    -------------------
+    There are two primary ways of working with session data in Laravel: the global session helper and via a Request instance.
+    1)Request instance:
+
+    public function show(Request $request, $id)
+    {
+    $value = $request->session()->get('key');
+
+    //
+    }
+
+    2)The Global Session Helper:
+    You may also use the global session PHP function to retrieve and store data in the session. When the session helper is called with a single, string argument, it will return the value of that session key. When the helper is called with an array of key / value pairs, those values will be stored in the session:
+
+
+
+    $value = session('key');
+
+    // Specifying a default value...
+    $value = session('key', 'default');
+
+    // Store a piece of data in the session...
+    session(['key' => 'value']);
+
+    Retrieving All Session Data
+    If you would like to retrieve all the data in the session, you may use the all method:
+
+    $data = $request->session()->all();
+
+    Determining If An Item Exists In The Session
+    To determine if an item is present in the session, you may use the has method. The has method returns true if the item is present and is not null:
+
+    if ($request->session()->has('users')) {
+    //
+    }
+    Storing Data:
+    -------------
+    To store data in the session, you will typically use the request instance's put method or the global session helper:
+
+    // Via a request instance...
+    $request->session()->put('key', 'value');
+
+    // Via the global "session" helper...
+    session(['key' => 'value']);
+
+    $request->session()->put("ADMIN_LOGIN", true);
+    $request->session()->put("ADMIN_ID", $result->id);
+
+    You can also flash a message to the session which will be available for only one request.
+
+
+    // Store a value in the session for one request
+    session()->flash('message', 'value');
+
+    // Retrieve
+    $value = session('message');
+
+
+    Deleting Data:
+    -----------------
+    The forget method will remove a piece of data from the session. If you would like to remove all data from the session, you may use the flush method:
+
+    // Forget a single key...
+    $request->session()->forget('name');
+
+    // Forget multiple keys...
+    $request->session()->forget(['name', 'status']);
+
+    $request->session()->flush();
+
+
+
+    /////////////////////////////
+    ////////////////////////////////////////////////
+
+    HTTP Requests:
+    ==============
+    Laravel's Illuminate\Http\Request class provides an object-oriented way to interact with the current HTTP request being handled by your application as well as retrieve the input, cookies, and files that were submitted with the request.
+
+
+    Retrieving The Request Method:
+    -----------------------------
+    The method method will return the HTTP verb for the request. You may use the isMethod method to verify that the HTTP verb matches a given string:
+
+    $method = $request->method();
+
+    if ($request->isMethod('post')) {
+    //
+    }
+
+    Retrieving All Input Data:
+    --------------------------
+    You may retrieve all of the incoming request's input data as an array using the all method. This method may be used regardless of whether the incoming request is from an HTML form or is an XHR request:
+
+    $input = $request->all();
+
+
+    $name = $request->input('name');
+
+    $name = $request->input('name', 'Sally');
+
+
+
+    Files:
+    =========
+    Retrieving Uploaded Files
+    You may retrieve uploaded files from an Illuminate\Http\Request instance using the file method or using dynamic properties. The file method returns an instance of the Illuminate\Http\UploadedFile class, which extends the PHP SplFileInfo class and provides a variety of methods for interacting with the file:
+
+    $file = $request->file('photo');
+
+    $file = $request->photo;
+
+    You may determine if a file is present on the request using the hasFile method:
+
+    if ($request->hasFile('photo')) {
+    //
+    }
+
+
+
+    Validating Successful Uploads
+    In addition to checking if the file is present, you may verify that there were no problems uploading the file via the isValid method:
+
+    if ($request->file('photo')->isValid()) {
+    //
+    }
+
+
+    $path = $request->photo->path();
+
+    $extension = $request->photo->extension();
+
+    Storing Uploaded Files:
+    -----------------------
+    To store an uploaded file, you will typically use one of your configured filesystems. The UploadedFile class has a store method that will move an uploaded file to one of your disks, which may be a location on your local filesystem or a cloud storage location like Amazon S3.
+
+    The store method accepts the path where the file should be stored relative to the filesystem's configured root directory. This path should not contain a filename, since a unique ID will automatically be generated to serve as the filename.
+
+    The store method also accepts an optional second argument for the name of the disk that should be used to store the file. The method will return the path of the file relative to the disk's root:
+
+    $path = $request->photo->store('images');
+
+    $path = $request->photo->store('images', 's3');
+
+    If you do not want a filename to be automatically generated, you may use the storeAs method, which accepts the path, filename, and disk name as its arguments:
+
+    $request->validate([
+    'picture' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+    ],[ 'picture.required' => 'A picture is required', 'picture.image' => 'The file must be an image', 'picture.mimes' => 'The file must be of type jpeg, png, jpg, gif, or svg', 'picture.max' => 'The file size must not exceed 2048 bytes',]);
+
+    $path = $request->photo->storeAs('images', 'filename.jpg');
+
+    $path = $request->photo->storeAs('images', 'filename.jpg', 's3');
+
+
+    Note: that you should also set the enctype attribute of your HTML form to multipart/form-data to properly handle file uploads.
+
+    <form method="POST" action="/upload" enctype="multipart/form-data">
+
+
+        Creating Responses:
+        =======================
+        Strings & Arrays
+        All routes and controllers should return a response to be sent back to the user's browser. Laravel provides several different ways to return responses. The most basic response is returning a string from a route or controller. The framework will automatically convert the string into a full HTTP response:
+
+        Route::get('/', function () {
+        return 'Hello World';
+        });
+
+        Redirects:
+        ------------
+        Redirect responses are instances of the Illuminate\Http\RedirectResponse class, and contain the proper headers needed to redirect the user to another URL. There are several ways to generate a RedirectResponse instance. The simplest method is to use the global redirect helper:
+
+        Route::get('/dashboard', function () {
+        return redirect('home/dashboard');
+        });
+
+        Redirecting To Named Routes
+
+
+        return redirect()->route('login');
+
+        JSON Responses:
+        ===============
+        The json method will automatically set the Content-Type header to application/json, as well as convert the given array to JSON using the json_encode PHP function:
+
+        return response()->json([
+        'name' => 'Abigail',
+        'state' => 'CA',
+        ]);
+
+
+
+        Generating Cookie Instances:
+        -----------------------------
+        If you would like to generate a Symfony\Component\HttpFoundation\Cookie instance that can be attached to a response instance at a later time, you may use the global cookie helper. This cookie will not be sent back to the client unless it is attached to a response instance:
+
+        $cookie = cookie('name', 'value', $minutes);
+
+        return response('Hello World')->cookie($cookie);
+        ////////////////////////////////////////////////////
+
+
+        Basics of laravel model :
+        =========================
+
+        -> Laravel model Is very important topic
+
+        -> to create laravel model use make model modelName class
+
+        it creates Eloquent model class
+
+        Command : php artisan make:model Student
+
+        Note : Model and Table has inter linking relation
+
+        Model name should be singular and table name should be plural
+
+        -> when we create a model we can create a table migration file and factory, seeder , resource controller along with this model
+
+
+        Command : php artisan make:model Student --all
+        (or)
+        php artisan make:model Student -mcrf
+
+
+        -> One model should linked with one table only if we have to link with curent model to another model we can link to that table
+
+        code should place at model file
+        $protected $table ="tbl_employyes"
+
+        model with database :
+        --------------------
+        --------------------
+
+        ->The model file is already linked with table and controller wehen we create model with -mcrf
+
+        -> the model file act like one object
+
+
+        php artisan make:model Student -mcrf
+
+
+        we can intilize in controller with model
+
+
+        $object = Student :: all();
+
+        or
+
+        $object = Student :: get();
+
+        it provide all saved data from the db table
+
+        if you want get data at where condition then we can get single model object where id is 1
+
+        $object = Student::where("id",1)->get();
+
+        $object = Student::where("id",1)->first();
+
+        first method also used to get only object model data instead of collection object and where condition no need primary key
+
+        these all are used to filtering data from model
+
+        best method is find method used to search where condition with primary key
+
+        $object = Student::find(1);
+
+
+        $object = Student::firstWhere("email","sds@sd");
+
+        it will also get single row object
+
+        we can print it as $object->name ;
+
+
+        model with insert operation ::
+        ----------------------------
+        ----------------------------
+
+        -> object can create with new keyword
+
+        $object = new Student();
+
+
+        $object->name=post_field;
+
+        $object->email=post_field;
+
+
+        $object->save();//it can insert all object data into which table integrate with student model automatically
+
+
+
+        model with delete operation ::
+        ----------------------------
+        ----------------------------
+
+        $object =Student :: find(id_of_student);
+
+        $object->delete();
+
+
+
+
+        model with update operation ::
+        ----------------------------
+        ----------------------------
+
+        For update function no special model function available
+
+        we can get data based on id and we can render this data to layout then that data insert to db by using save();
+
+
+        Query builder :: select statement():
+        ====================================
+
+        -> first we should load DB class
+
+        -> By using DB calss we can select and insert update delete operations also
+
+        ->here we can add "table" word with DB class
+
+        use DB;
+
+        $students = DB :: table('table_name')->get();
+
+
+        $students = DB :: table('table_name')->select("name" , "email")->get();
+
+
+        $students = DB :: table('table_name')->where("id",2)->select("name" , "email")->first();
+
+
+        $students = DB :: table('table_name')->select("name" , "email")->find(5);
+
+        here find is used to search primary key of id like where condition
+
+
+        next i want list those email have exmple.org at last phrase , use like keyword
+
+
+        $students = DB :: table('table_name')->where("email" , "like" , "%example.org")->get();
+
+        i want listout bellow id of 300 users
+
+        $students = DB :: table('table_name')->where("id" , ">=" , 300)->get();
+
+
+        AND , OR operators :
+        --------------------
+
+        1)SELECT * FROM table_name WHERE ID = 3 AND NAME = "ABC"
+
+        $students = DB::table('students')->where("id",3)->where("name","abc")->get();
+
+        2)SELECT * FROM table_name WHERE ID = 3 AND (NAME ="ABC" OR EMAIL = "");
+
+        $students = DB::table('students')->where("id" , 3)->where(function($query){
+        $query->where("name","abc")->orWhere("email","sdsd");
+        })->get();
+
+        3)SELECT * FROM table_name WHERE NAME = "ABC" OR (ID=3 AND EMAIL="");
+
+        $students = DB::table('students')->where("name" , "abc")->orWhere(function($query){
+        $query->where("id",3)->where("email","sdsd");
+        })->get();
+
+        4)SELECT * FROM table_name WHERE ID BETWEEN 5 AND 3;
+
+        $students = DB::table('students')->whereBetween("id",[2,30])->get();
+
+        5)SELECT * FROM table_name WHERE ID in(1,100,200);
+
+        $students = DB::table("students")->whereIn("id" , [2,3,4,5,6])->get();
+
+
+        JOINS using query builders :
+        ===========================
+
+        1)Inner Join :
+
+        It retrieved matches data only from left and Right table
+
+        $students = DB::table("students as st")->select("st.name as student_name , c.name as cource_name")->join("cources as c","st.id" , "=" , "c.id" )->get();
+
+        2)Left Join :
+        it retrieved matched data of right table with right table and also all data of left table if no matched data
+
+        $students = DB::table("students as st")->select("st.name as student_name , c.name as cource_name")->leftJoin("cources as c","st.id" , "=" , "c.id" )->get();
+
+        3)Right Join :
+
+        it retrieved matched data of right table with left table and also all data of right table if no matched data
+
+        $students = DB::table("students as st")->select("st.name as student_name , c.name as cource_name")->rightJoin("cources as c","st.id" , "=" , "c.id" )->get();
+
+
+
+        Insert DB QUERY:
+        ----------------
+
+        $students = DB::table("students")->insert(["name"=>"Sddasd"]);
+
+        get last insert_id with insert data:
+
+        $studnt_id = DB ::table("students")->insertGetId([]);
+
+        Bulk Insert :
+
+        DB::table("students")->insert([
+        [],
+        [],
+        []
+        ]);
+
+        Update DB Query :
+        -----------------
+
+        DB::table("students")->where("id",5)->update([
+        "name"=>"","email"=>""
+        ]);
+
+
+        Condition : if data exist then update data otherwise data will insert
+
+
+        DB::table("students")->updateOrInsert(
+        [],//condition
+        []//data
+        );
+
+        Delete DB Query:
+        ----------------
+
+        DB::table("students")->delete();
+
+        DB::table("students")->where("id",1)->delete();
+
+        Truncate:
+        ----------
+
+        DB::table("students")->truncate();
+
+
+        Middelware:
+        ============
+
+        -> middelware provide convinent mechanism for inspecting and filtering HTTP request to entering to the applications
+
+        -> Middleware acts as a layer between the user and requests. it means when user request to the server it will pass through the middleware.
+
+        ->middleware can be used to perfom variety of tasks except authentication. for example CORS middelware are used to adding headers to all responces..
+
+        3 types
+
+        1)global: these one we are not using mostly ..
+
+        2)group
+
+        3)routed
+
+
+        Create general function :
+        ===========================
+
+        => create a floder with any name in app folder
+        => create a general file in that folder with any name
+
+        ex: General/general.php
+
+        create any function in that
+
+        run this comnmand
+
+        composer dump-autoload
+
+        then we can call any where that function
+
+
+        Eloquent Model Relation ships :
+        ===============================
+
+
+        1) Has One Through relationship:
+        ---------------------------------
+
+        2)Has Many Through relationship:
+        --------------------------------
+
+
+        3)many-to-many relationship:
+        ----------------------------
+
+        4)One to Many Relationship:
+        ---------------------------
+
+
+        5)One to One Relationship:
+        --------------------------
+
+
+        Feature Test:
+        ==============
+
+        php artisan make:test Master/SampleCtrlTest
+
+
+        php artisan test --filter CapabilityCategoryTest
+
+        public function test_version_features_listing_data()
+        {
+        $headers = $this->getToken();
+        $responseData = VersionSystem::latest()->first();
+        $response = $this->json('POST', 'api/version-features/list', ['version_no' => $responseData->id, 'limit' => 10, 'offset' => 0, 'order' => 'asc', 'sort' => 'id', 'search' => ''], $headers);
+        $response->assertValid();
+        $response->assertStatus(200);
+        $response->assertJsonPath('settings.success', 1);
+        }
+        public function test_version_features_listing_without_version_id()
+        {
+        $headers = $this->getToken();
+        $response = $this->json('POST', 'api/version-features/list', ['version_no' => '', 'limit' => 10, 'offset' => 0, 'order' => 'asc', 'sort' => 'id', 'search' => ''], $headers);
+        $response->assertValid();
+        $response->assertStatus(400);
+        $response->assertJsonPath('settings.success', 0);
+        }
+
+
+
+        Laravel 10:
+        ==========
+
+        -> create laravel project
+
+        -> steps to run laravel project with vite
+
+        What is Vite?
+        =============
+
+
+        Vite (the French word for “quick”, pronounced /vit/ , like “veet”) is a build tool that aims to provide a faster and leaner development
+        experience for modern web projects.
+
+        Features of Vite:
+        =================
+        Instant Server Start
+        Lightning Fast HMR (Hot Module Replacement)
+        Support for TypeScript, JSX, CSS, and more.
+
+        Optimized Build
+        Universal Plugins
+        Fully Typed APIs
+
+        Laravel has just released “laravel 10.19” with a major change. There is no more webpack.mix.js file in the laravel root in the place of
+        the webpack.mix.js file vite.config.js file is introduced.
+
+        install bootstrap 5 in laravel 10 with vite. In laravel 10.19 come with vite tool, we will install bootstrap 5
+        in laravel 10 with laravel ui.
+
+        => Here, we will install laravel ui package that allow to install bootstrap with auth. so, let's run following command:
+
+        composer require laravel/ui --dev
+
+        Here, we will add bootstrap with auth scaffolding. so, let's run following command:
+
+        php artisan ui bootstrap --auth
+
+        In this step, we will add bootstrap icon. so, let's run following command:
+
+        npm install bootstrap-icons --save-dev
+
+        Run the following command to install frontend dependencies:
+        npm install
+
+        Step 5: Import vite.config.js Bootstrap 5 Path
+        First, you need to change vite.config.js and add the bootstrap 5 path & remove resources/css/app.css
+
+        By default its came
+
+        Step 6: Update bootstrap.js
+        We need to use import instead of require.
+
+        import 'bootstrap'
+        import jQuery from 'jquery';
+        window.$ = window.jQuery = jQuery;
+
+        Step 7: Import Bootstrap 5 SCSS in JS Folder
+        Now you need to import bootstrap 5 SCSS path in you resources/js/app.js or resources/js/bootstrap.js
+
+        import './bootstrap';
+
+        import * as bootstrap from 'bootstrap';
+        window.bootstrap = bootstrap;
+        import toastr from 'toastr';
+        window.toastr = toastr;
+
+        Step 8: @vite Blade directive
+
+        @vite(['resources/sass/app.scss','resources/js/app.js'])
+
+        Step 9: Running Vite Command to build Asset File
+        You need to npm run build command to create asset bootstrap 5.
+
+        npm run build
+        Step 10: Start the Local server
+        Now open a new terminal and execute the following command from your terminal to run the development server.
+
+        php artisan serve --host=192.168.20.50 --port=8000
