@@ -31,8 +31,7 @@
               <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Email Address') }}</label>
 
               <div class="col-md-6">
-                <input id="email" type="email" class="form-control " name="email" value="{{ old('email') }}" autocomplete="email">
-
+                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" autocomplete="email" autofocus>
                 <span id="email_err">
                   @error('email')
                   <span class="invalid-feedback" role="alert">
