@@ -397,6 +397,8 @@ here
     php artisan migrate:refresh
 
 
+    php artisan migrate:refresh --path="database/migrations/Your_Migration_File_Name_table.php" --> for migrating particular file.
+
 
     Basics of seeders :
     =================
@@ -1002,10 +1004,14 @@ here
 
         create any function in that
 
-        run this comnmand
-
-        composer dump-autoload
-
+        change copmposer.jsocn bellow <code> "autoload": {
+            "psr-4": {
+            "App\\": "app/",
+            "Database\\Factories\\": "database/factories/",
+            "Database\\Seeders\\": "database/seeders/",
+            "App\\Libraries\\": "app/Libraries/"
+            }
+            },</code>
         then we can call any where that function
 
 

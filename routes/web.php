@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginRegisterController;
+use App\Http\Controllers\StudentController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,4 +25,15 @@ Route::controller(LoginRegisterController::class)->group(function () {
 
     Route::get('/dashboard', 'dashboard')->name('dashboard');
     Route::get('/logout', 'logout')->name('logout');
+});
+Route::controller(StudentController::class)->group(function () {
+    Route::get('/crud/list', 'index');
+    Route::get('/crudListing', 'ListingData');
+    Route::get('/crud/add', 'add');
+    Route::post('/crud-add-action', 'addAction');
+    Route::get('/crud/edit/{id}', 'edit');
+    Route::post('/crud-edit-action/{id}', 'editAction');
+    Route::post('/crud/updateStatus', 'updateStatus');
+    Route::get('/crud-delete/{$id}', 'delete');
+    Route::post('/crud/deleteAll', 'deleteAll');
 });

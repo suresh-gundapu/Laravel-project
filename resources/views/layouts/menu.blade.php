@@ -8,18 +8,22 @@
       <ul class="navbar-nav ms-auto">
         @guest
         <li class="nav-item">
-          <a class="nav-link {{ (request()->is('login')) ? 'active' : '' }}" href="{{ route('login') }}">Login</a>
+          <a class="nav-link {{ (request()->is('/')) ? 'active' : '' }}" href="{{ url('/') }}">Login</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {{ (request()->is('register')) ? 'active' : '' }}" href="{{ route('register') }}">Register</a>
+          <a class="nav-link {{ (request()->is('register')) ? 'active' : '' }}" href="{{ url('register') }}">Register</a>
         </li>
+
         @else
-        <li class="nav-item dropdown">
+        <li class="nav-item ">
+          <a class="nav-link {{ (request()->is('crud/list')) ? 'active' : '' }} text-white" href="{{ url('crud/list') }}">CRUD</a>
+        </li>
+        <li class=" nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             {{ Auth::user()->name }}
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="{{ route('logout') }}">Logout</a>
+            <li><a class="dropdown-item" href="{{ url('logout') }}">Logout</a>
             </li>
           </ul>
         </li>
