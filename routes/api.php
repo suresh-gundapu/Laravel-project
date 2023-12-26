@@ -24,7 +24,7 @@ Route::controller(StudentController::class)->group(function () {
     Route::post('crud/listing', 'index');
     Route::post('crud/add', 'store');
     Route::get('crud/edit/{id}', 'show');
-    Route::post('crud/update/{id}', 'update');
+    Route::post('crud/update', 'update');
     Route::post('crud/update-status', 'updateStatus');
     Route::post('crud/deleteAll', 'deleteAll');
 });

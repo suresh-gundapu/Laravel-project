@@ -59,9 +59,7 @@ class StudentController extends BaseController
         "mobile" => "required",
         "course" => "required",
         "status" => "required",
-
       ]);
-
       if ($validator->fails()) {
         return $this->sendError($validator->errors()->first());
       }
@@ -117,23 +115,109 @@ class StudentController extends BaseController
   /**
    * Update the specified resource in storage.
    */
-  public function update(Request $request, string $id)
+  public function update(Request $request)
   {
-    //
+    try {
+      $inputParams = $request->all();
+      $validator = Validator::make($request->all(), [
+        'id' => 'required|exists:students,id',
+        "first_name" => "required",
+        "last_name" => "required",
+        "email" => "required",
+        "profile" => "required|image|mimes:jpeg,png,jpg,gif,svg|max:2048",
+        "address" => "required",
+        "mobile" => "required",
+        "course" => "required",
+        "status" => "required",
+      ]);
+
+      if ($validator->fails()) {
+        return $this->sendError($validator->errors()->first());
+      }
+      $imageName = '';
+      $extensionArr = ['jpg', 'png', 'jpeg', 'gif'];
+      if ($request->has('profile') && !empty($request->file('profile')->getClientOriginalName())) {
+        $imageExt = $request->file('profile')->extension();
+        if (in_array($imageExt, $extensionArr)) {
+          $imageName = 'students' . time() . '.' . $imageExt;
+          $request->profile->move(public_path('upload/students/'), $imageName);
+          if (!empty($request->old_image_name)) {
+            $image_path = public_path('upload/students/' . $request->old_image_name);
+            if (File::exists($image_path)) {
+              File::delete($image_path);
+            }
+          }
+        } else {
+          throw new Exception('Invalid Image Extension');
+        }
+      }
+      $student = Student::where('id', $inputParams['id'])->first();
+      if (empty($student)) {
+        throw new Exception('No record found');
+      }
+      $student->first_name = $inputParams['first_name'];
+      $student->last_name = $inputParams['last_name'];
+      $student->email = $inputParams['email'];
+      $student->mobile = $inputParams['mobile'];
+      $student->address = $inputParams['first_name'];
+      $student->course = $inputParams['course'];
+      $student->status = $inputParams['status'];
+      $student->profile = $imageName;
+      $student->save();
+      $insertId = $student->id;
+      if (!$insertId) {
+        throw new Exception('Student action failure in updating record');
+      }
+      return $this->sendSuccessResponse($student, 'Student action record updated successfully');
+    } catch (Exception $e) {
+      return $this->sendError($e->getMessage());
+    }
   }
 
   /**
    * Update the specified resource in storage.
    */
-  public function updateStatus(Request $request, string $id)
+  public function updateStatus(Request $request)
   {
-    //
+    try {
+      $paramsArr = $request->all();
+      $validator = Validator::make($paramsArr, [
+        'id' => 'required|exists:students,id',
+        'status' => 'required'
+      ]);
+      if ($validator->fails()) {
+        return $this->sendError($validator->errors()->first());
+      }
+      $values = array('status' => $paramsArr['status']);
+      $affectRow =  Student::whereIn('id', $paramsArr['id'])->update($values);
+      if (!$affectRow) {
+        throw new Exception('Student action failure in updating record');
+      }
+      return $this->sendSuccessResponse([], 'Student action record updated successfully');
+    } catch (Exception $e) {
+      return $this->sendError($e->getMessage());
+    }
   }
   /**
    * Remove the specified resource from storage.
    */
-  public function deleteAll(string $id)
+  public function deleteAll(Request $request)
   {
-    //
+    try {
+      $paramsArr = $request->all();
+      $validator = Validator::make($paramsArr, [
+        'id' => 'required|exists:students,id',
+      ]);
+      if ($validator->fails()) {
+        return $this->sendError($validator->errors()->first());
+      }
+      $affectRow =  Student::whereIn('id', $paramsArr['id'])->delete();
+      if (!$affectRow) {
+        throw new Exception('Student action failure in deletion record');
+      }
+      return $this->sendSuccessResponse([], 'Student action record deleted successfully');
+    } catch (Exception $e) {
+      return $this->sendError($e->getMessage());
+    }
   }
 }

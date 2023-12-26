@@ -8,7 +8,10 @@
       <ul class="navbar-nav ms-auto">
         @guest
         <li class="nav-item">
-          <a class="nav-link {{ (request()->is('/')) ? 'active' : '' }}" href="{{ url('/') }}">Login</a>
+          <a class="nav-link {{ (request()->is('/')) ? 'active' : '' }}" href="{{ url('/') }}">Login-WEB</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {{ (request()->is('/login-api')) ? 'active' : '' }}" href="{{ url('/login-api') }}">Login-API</a>
         </li>
         <li class="nav-item">
           <a class="nav-link {{ (request()->is('register')) ? 'active' : '' }}" href="{{ url('register') }}">Register</a>
@@ -16,7 +19,10 @@
 
         @else
         <li class="nav-item ">
-          <a class="nav-link {{ (request()->is('crud/list')) ? 'active' : '' }} text-white" href="{{ url('crud/list') }}">CRUD</a>
+          <a class="nav-link {{ (request()->is('crud/list')) ? 'active' : '' }} text-white" href="{{ url('crud/list') }}">CRUD-WEB</a>
+        </li>
+        <li class="nav-item ">
+          <a class="nav-link {{ (request()->is('crud-api/list')) ? 'active' : '' }} text-white" href="{{ url('crud-api/list') }}">CRUD-API</a>
         </li>
         <li class=" nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">

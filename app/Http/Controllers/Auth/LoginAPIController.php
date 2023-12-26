@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
-class LoginRegisterController extends Controller
+class LoginAPIController extends Controller
 {
   /**
    * Instantiate a new LoginRegisterController instance.
@@ -33,7 +33,7 @@ class LoginRegisterController extends Controller
   public function login()
   {
 
-    return view('auth.login');
+    return view('auth.login_api');
   }
   public function register()
   {
@@ -65,33 +65,7 @@ class LoginRegisterController extends Controller
       return redirect(url('/'))->with('error', $e->getMessage());
     }
   }
-  public function registerAction(Request $request)
-  {
-    try {
-      $validator = Validator::make($request->all(), [
-        'name' => 'required|string|max:250',
-        'username' => 'required|string|max:250',
-        'email' => 'required|email|max:250|unique:users',
-        'password' => 'required|min:6|confirmed'
-      ]);
-      if ($validator->fails()) {
-        return redirect()->back()->withErrors($validator)->withInput();
-      }
-      $user  = new User();
-      $user->name = $request->name;
-      $user->username = $request->username;
 
-      $user->email = $request->email;
-      $user->password = Hash::make($request->password);
-      $user->save();
-      $credentials = $request->only('email', 'password');
-      Auth::attempt($credentials);
-      $request->session()->regenerate();
-      return redirect(url('dashboard'))->with('success', "You have successfully registered!");
-    } catch (\Exception $e) {
-      return redirect(url('/'))->with('error', $e->getMessage());
-    }
-  }
   public function logout(Request $request)
   {
     Auth::logout();

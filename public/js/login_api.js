@@ -4,7 +4,6 @@ $(function () {
             "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
         },
     });
-
     $("#form-login").validate({
         rules: {
             username: "required",
@@ -14,7 +13,6 @@ $(function () {
             username: "Please enter UserName",
             password: "Please enter Password",
         },
-
         errorPlacement: function (error, element) {
             if (element.attr("name") === "username") {
                 $("#username_err").html(error);

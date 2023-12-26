@@ -8,6 +8,7 @@ $(function () {
     $("#form-register").validate({
         rules: {
             name: "required",
+            username: "required",
             email: "required",
             password: "required",
             password: {
@@ -22,6 +23,8 @@ $(function () {
         },
         messages: {
             name: "Please enter Name",
+            username: "Please enter UserName",
+
             email: "Please enter Email",
             password: {
                 required: "Please enter Password",
@@ -48,6 +51,9 @@ $(function () {
             }
             if (element.attr("name") === "password_confirmation") {
                 $("#cpassword_err").html(error);
+            }
+            if (element.attr("name") === "username") {
+                $("#username_err").html(error);
             }
         },
     });
