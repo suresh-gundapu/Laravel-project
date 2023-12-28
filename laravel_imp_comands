@@ -21,6 +21,11 @@ sudo update-alternatives --set phar.phar /usr/bin/phar.phar7.4
 
 sudo service apache2 restart
 
+Git changes remove when clone new project:
+========================================
+
+git config core.fileMode false
+
 Installation Laravel 9 in Ubuntu 20.0
 ----------------
 ----------------

@@ -18,7 +18,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::controller(LoginRegisterController::class)->group(function () {
-
     Route::get('/', 'login')->name('login');
     Route::post('/login-action', 'loginAction')->name('login-action');
     Route::get('/register', 'register')->name('register');
@@ -47,6 +46,7 @@ Route::middleware('auth:web')->group(function () {
 
 Route::controller(LoginAPIController::class)->group(function () {
     Route::get('/login-api', 'login')->name('login-api');
+    Route::post('/login-action', 'loginAction')->name('login-action');
 });
 
 Route::controller(StudentAPIController::class)->group(function () {

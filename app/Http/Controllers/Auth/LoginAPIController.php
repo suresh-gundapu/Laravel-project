@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 
 class LoginAPIController extends Controller
 {
@@ -44,19 +45,22 @@ class LoginAPIController extends Controller
   public function loginAction(Request $request)
   {
     try {
-      $validator = Validator::make($request->all(), [
-        'username' => 'required',
-        'password' => 'required',
-      ]);
-      if ($validator->fails()) {
-        return redirect()->back()->withErrors($validator)->withInput();
-      }
-      $credentials = [
-        'username' => $request->username,
-        'password' =>  $request->password
+      $inputParams = $request->all();
+      $credentials = $request->only('username', 'password');
+
+      $postInput = [
+        'username' => $inputParams['username'],
+        'password' => $inputParams['password']
       ];
-      if (Auth::attempt($credentials)) {
-        $request->session()->regenerate();
+      $apiURL = 'http://192.168.20.50:8000/api/login';
+      $headers = [];
+      $response = Http::withHeaders($headers)->post($apiURL, $postInput);
+      $responseData = $response->json();
+      $arrObj = ['access_token' => $responseData['settings']['access_token']];
+      User::where('id', $responseData['data']['id'])->update($arrObj);
+      if ($responseData['settings']['success'] == 1) {
+        Auth::attempt($credentials);
+        // $request->session()->regenerate();
         return redirect(url('dashboard'))->with('success', "You have successfully logged in!");
       } else {
         return redirect(url('/'))->with('error', "our provided credentials do not match in our records.");

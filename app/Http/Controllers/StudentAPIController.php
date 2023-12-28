@@ -6,6 +6,7 @@ use App\Models\Student;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\Libraries\General;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
 
@@ -32,10 +33,10 @@ class StudentAPIController extends Controller
         'search' => $inputParams['search']
       ];
       $apiURL = 'http://192.168.20.50:8000/api/crud/listing';
-      $headers = [];
+      $headers = ["Authorization" => "Bearer " . auth()->user()->access_token];
       $response = Http::withHeaders($headers)->post($apiURL, $postInput);
       $responseData = $response->json();
-      $listingData = array('count' => $responseData['data']['count'], 'data' => $responseData['data']['systemServerList'], 'status' => $responseData['data']['status']);
+      $listingData = array('count' => $responseData['data']['count'], 'data' => $responseData['data']['data'], 'status' => $responseData['data']['status']);
       $returnArray = $listingData;
     } catch (\Exception $e) {
       $returnArray  = $e->getMessage();
